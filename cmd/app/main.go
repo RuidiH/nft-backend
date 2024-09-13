@@ -1,16 +1,24 @@
+// backend/cmd/app/main.go
+
 package main
 
 import (
-    "fmt"
-    "net/http"
+	"fmt"
+	"net/http"
+
+	"github.com/RuidiH/nft-backend/internal/db"
+	"github.com/RuidiH/nft-backend/internal/handlers"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintln(w, "Hello, World!")
-}
-
 func main() {
-    http.HandleFunc("/", handler)
-    fmt.Println("Server is listening on port 8080")
-    http.ListenAndServe(":8080", nil)
+	// Connect to the database
+	db.ConnectDB()
+
+	// Register HTTP handlers
+	http.HandleFunc("/users", handlers.GetUsers)
+
+	fmt.Println("Server is listening on port 8080")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		fmt.Println("Failed to start server:", err)
+	}
 }

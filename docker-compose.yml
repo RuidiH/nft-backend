@@ -5,3 +5,12 @@ services:
     build: .
     ports:
       - "8080:8080"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydb
+
+  mongo:
+    image: mongo:4.4
+    ports:
+      - "27017:27017"
